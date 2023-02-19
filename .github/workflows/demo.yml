@@ -1,12 +1,20 @@
 
+name: Demo Python Workflow
 on: [push]
-
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.10"]
+
     steps:
-      - uses: actions/checkout@v2
-      - name: Write a multi-line message
-    run: |
-      echo This demo file shows a 
-      echo very basic and easy-to-understand workflow.
+      - uses: actions/checkout@v3
+      - name: Set up Python for Demo
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies for demo Python project  
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 pytest
